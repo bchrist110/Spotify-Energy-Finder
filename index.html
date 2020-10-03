@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>YouTube video finder</title>
+    <title>Spotify Energy Finder</title>
     <link rel="shortcut icon" href="#">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
-        <h1>National Park Finder</h1>
-        <p>Format Example: WA,OR,CA</p>
+        <h1>Spotfiy Energy Finder</h1>
+        <p>Enter Song, Artist, Album, or Public Playlist</p>
         <form id="js-form">
-            <label for="search-term">Search State(s) </label>
-            <input type="text" name="search-term" id="js-search-term" required>
+            <label for="search-term">Search</label>
+            <input type="text" name="search-term" id="js-search-term">
+
+            <label for="type">Choose:</label>
+            <select id="type" name="type">
+                <option value="Track">Track</option>
+                <option value="Artist">Artist</option>
+                <option value="Album">Album</option>
+                <option value="Public-Playlist">Public Playlist</option>
+            </select>
 
             <label for="max-results">Maximum results to return</label>
             <input type="number" name="max-results" id="js-max-results" value="10">
