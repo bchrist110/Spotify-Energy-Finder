@@ -28,7 +28,7 @@ function post() {
   fetch(myAuthRequest)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      return data
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -36,48 +36,10 @@ function post() {
     
 }
 
-function formatQueryParams(params) {
-  const queryItems = Object.keys(params)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-  return queryItems.join('&');
-}
-
-function search(string, limit=10, typeOfMusic) {
-  const params = {
-    q: string,
-    type: typeOfMusic,
-    limit,
-  };
-
-  var heads = {
-    'Authorization': 'Bearer ' + 'BQBj7nj6VjIBraIVhZIQrHZHlFjL8sUnDpL15KAxrVM199H444ARwxgrG6PWiv-XlhO5gs-TnCRDuf_Pjhs',
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-  const queryString = formatQueryParams(params)
-  const url = searchURL +"/search" + '?' + queryString;
-
-  const myAuthInit1 = {
-    method: "GET",
-    headers: heads,
-};
-
-  const myAuthRequest1 = new Request(url, myAuthInit1);
-  
-  fetch(myAuthRequest1)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-      })
-      .catch((error) => {
-          console.log("Error:", error);
-      });
-}
-
 function getEnergy(trackID) {
   
   var heads = {
-    'Authorization': 'Bearer ' + 'BQBj7nj6VjIBraIVhZIQrHZHlFjL8sUnDpL15KAxrVM199H444ARwxgrG6PWiv-XlhO5gs-TnCRDuf_Pjhs',
+    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
@@ -96,6 +58,7 @@ function getEnergy(trackID) {
       .then(data => {
         console.log(data)
         console.log(data.energy)
+        return data.energy
       })
       .catch((error) => {
           console.log("Error:", error);
@@ -108,7 +71,7 @@ function getPlaylistTracks() {
   };
 
   var heads = {
-    'Authorization': 'Bearer ' + 'BQBj7nj6VjIBraIVhZIQrHZHlFjL8sUnDpL15KAxrVM199H444ARwxgrG6PWiv-XlhO5gs-TnCRDuf_Pjhs',
+    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
@@ -132,6 +95,62 @@ function getPlaylistTracks() {
       });
 }
 
+function formatQueryParams(params) {
+  const queryItems = Object.keys(params)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+  return queryItems.join('&');
+}
+
+function displayResults(responseJson) {
+  console.log(responseJson);
+  $('#results-list').empty();
+  for (let i = 0; i < responseJson.tracks.items.length; i++){
+    getEnergy(responseJson.tracks.items[i].id)
+    $('#results-list').append(
+      `<li><h3>${responseJson.tracks.items[i].name}</h3>
+      <h4>${responseJson.tracks.items[i].artists[0].name}</h4>
+      <p>${responseJson.tracks.items[i].album.name}</p>
+      <a href='${responseJson.tracks.items[i].external_urls.spotify}'>${responseJson.tracks.items[i].name}</a>
+      </li>`
+    )};
+};
+
+
+function search(string, limit=10, typeOfMusic) {
+  const params = {
+    q: string,
+    type: typeOfMusic,
+    limit,
+  };
+
+  var heads = {
+    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+  const queryString = formatQueryParams(params)
+  const url = searchURL +"/search" + '?' + queryString;
+
+  const myAuthInit1 = {
+    method: "GET",
+    headers: heads,
+};
+
+  const myAuthRequest1 = new Request(url, myAuthInit1);
+  
+  fetch(myAuthRequest1)
+      .then(response => response.json())
+      .then(data => {
+        displayResults(data)
+        console.log(data)
+      })
+      .catch((error) => {
+          console.log("Error:", error);
+      });
+}
+
+
+
 
 function watchForm() {
   post()
@@ -142,7 +161,7 @@ function watchForm() {
     const typeOf = $('#type').val();
     
     search(searchTerm, maxResults, typeOf);
-    getEnergy("6JyuJFedEvPmdWQW0PkbGJ")
+    //getEnergy("6JyuJFedEvPmdWQW0PkbGJ")
     //getPlaylistTracks()
   });
 }
