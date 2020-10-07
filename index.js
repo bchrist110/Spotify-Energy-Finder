@@ -101,7 +101,7 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
-
+const webURL = "https://open.spotify.com/embed/track/"
 
 function displayResults(responseJson, accToken) {
   console.log(responseJson);
@@ -115,8 +115,7 @@ function displayResults(responseJson, accToken) {
       <h3>${responseJson.tracks.items[i].name}</h3>
       <h4>${responseJson.tracks.items[i].artists[0].name}</h4>
       <p>${responseJson.tracks.items[i].album.name}</p>
-      <a href='${responseJson.tracks.items[i].external_urls.spotify}'>${responseJson.tracks.items[i].name}</a>
-      <iframe src='${responseJson.tracks.items[i].external_urls.spotify}' width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      <iframe src= "${webURL}${responseJson.tracks.items[i].id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>></iframe>
       <p id='${responseJson.tracks.items[i].id}'><p>
       </li>`
     )
@@ -124,7 +123,7 @@ function displayResults(responseJson, accToken) {
   var energies = getEnergy(trackIds.join('%2C'), accToken)
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
-      $('#' + NRG[i].id).text(NRG[i].energy.toString())
+      $('#' + NRG[i].id).text('Energy: ' + NRG[i].energy.toString())
       console.log(NRG[i].id)
     }
   })
