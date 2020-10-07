@@ -4,6 +4,7 @@
 
 const searchURL = 'https://api.spotify.com/v1';
 
+
 function post() {
   var headers = {
       'Authorization': 'Basic ' + 'ZTYxNjAyZjFiOTI1NGI5NTlhZWZkNDc1OWEwZTQ3MTU6ZGExMjg5OTRhNDk1NGNjYjhjZGJmZjQ2YzNmMTgxOTM= ',
@@ -25,10 +26,10 @@ function post() {
   
   const myAuthRequest = new Request("https://accounts.spotify.com/api/token", myAuthInit);
   
-  fetch(myAuthRequest)
+  return fetch(myAuthRequest)
     .then(response => response.json())
     .then(data => {
-      return data
+      return data.access_token
     })
     .catch((error) => {
       console.log("Error:", error);
@@ -36,15 +37,15 @@ function post() {
     
 }
 
-function getEnergy(trackID) {
+function getEnergy(trackID, accToken) {
   
   var heads = {
-    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
+    'Authorization': 'Bearer ' + accToken,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
   
-  const url2 = searchURL +"/audio-features/" + trackID;
+  const url2 = searchURL +"/audio-features?ids=" + trackID;
 
   const myAuthInit2 = {
     method: "GET",
@@ -53,25 +54,24 @@ function getEnergy(trackID) {
 
   const myAuthRequest2 = new Request(url2, myAuthInit2);
   
-  fetch(myAuthRequest2)
+  return fetch(myAuthRequest2)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
-        console.log(data.energy)
-        return data.energy
+        console.log(data.audio_features)
+        return data.audio_features
       })
       .catch((error) => {
           console.log("Error:", error);
       });
 }
 
-function getPlaylistTracks() {
+function getPlaylistTracks(accToken) {
   const params1 = {
     market: 'US'
   };
 
   var heads = {
-    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
+    'Authorization': 'Bearer ' + accToken,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
@@ -101,22 +101,37 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
-function displayResults(responseJson) {
+
+
+function displayResults(responseJson, accToken) {
   console.log(responseJson);
+  var trackIds = []
   $('#results-list').empty();
   for (let i = 0; i < responseJson.tracks.items.length; i++){
-    getEnergy(responseJson.tracks.items[i].id)
+    trackIds.push(responseJson.tracks.items[i].id)
+    console.log(trackIds)
     $('#results-list').append(
-      `<li><h3>${responseJson.tracks.items[i].name}</h3>
+      `<li>
+      <h3>${responseJson.tracks.items[i].name}</h3>
       <h4>${responseJson.tracks.items[i].artists[0].name}</h4>
       <p>${responseJson.tracks.items[i].album.name}</p>
       <a href='${responseJson.tracks.items[i].external_urls.spotify}'>${responseJson.tracks.items[i].name}</a>
+      <iframe src='${responseJson.tracks.items[i].external_urls.spotify}' width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      <p id='${responseJson.tracks.items[i].id}'><p>
       </li>`
-    )};
+    )
+  };
+  var energies = getEnergy(trackIds.join('%2C'), accToken)
+  energies.then(NRG => {
+    for (let i=0;i<NRG.length;i++) {
+      $('#' + NRG[i].id).text(NRG[i].energy.toString())
+      console.log(NRG[i].id)
+    }
+  })
 };
 
 
-function search(string, limit=10, typeOfMusic) {
+function search(string, limit=10, typeOfMusic, accToken) {
   const params = {
     q: string,
     type: typeOfMusic,
@@ -124,7 +139,7 @@ function search(string, limit=10, typeOfMusic) {
   };
 
   var heads = {
-    'Authorization': 'Bearer ' + 'BQBL0CkHuMqdiM7ASdTjuxezHKcVdK-xSm3N7-0gJLDSLsbSW4JJmIUha_kWx4rm2hoeS6wfi24UJR8Q3uE3WkYKfCrgQOobUQ5GsdkauL2aQdAueJijBFEtKkWJ6WAV3j-t6XnnfWo',
+    'Authorization': 'Bearer ' + accToken,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   }
@@ -141,7 +156,7 @@ function search(string, limit=10, typeOfMusic) {
   fetch(myAuthRequest1)
       .then(response => response.json())
       .then(data => {
-        displayResults(data)
+        displayResults(data, accToken)
         console.log(data)
       })
       .catch((error) => {
@@ -153,14 +168,14 @@ function search(string, limit=10, typeOfMusic) {
 
 
 function watchForm() {
-  post()
+  var authTokenPromise = post()
   $('form').submit(event => {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
     const typeOf = $('#type').val();
     
-    search(searchTerm, maxResults, typeOf);
+    authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
     //getEnergy("6JyuJFedEvPmdWQW0PkbGJ")
     //getPlaylistTracks()
   });
