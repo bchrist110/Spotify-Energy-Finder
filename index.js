@@ -119,7 +119,7 @@ function energyRating(energy) {
   if (0.8 < energy < 0.9) {
     return "High"
   }
-  if (0.9 < energy < 1) {
+  else {
     return "Super High"
   }
 }
