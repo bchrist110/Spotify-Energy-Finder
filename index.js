@@ -103,6 +103,27 @@ function formatQueryParams(params) {
 
 const webURL = "https://open.spotify.com/embed/track/"
 
+function energyRating(energy) {
+  if (energy < 0.5) {
+    return "Low"
+  }
+  if (0.5 < energy < 0.6) {
+    return "Mid-low"
+  }
+  if (0.6 < energy < 0.7) {
+    return "Medium"
+  }
+  if (0.7 < energy < 0.8) {
+    return "Mid-high"
+  }
+  if (0.8 < energy < 0.9) {
+    return "High"
+  }
+  if (0.9 < energy < 1) {
+    return "Super High"
+  }
+}
+
 function displayResults(responseJson, accToken) {
   console.log(responseJson);
   var trackIds = []
@@ -112,10 +133,7 @@ function displayResults(responseJson, accToken) {
     console.log(trackIds)
     $('#results-list').append(
       `<li>
-      <h3>${responseJson.tracks.items[i].name}</h3>
-      <h4>${responseJson.tracks.items[i].artists[0].name}</h4>
-      <p>${responseJson.tracks.items[i].album.name}</p>
-      <iframe src= "${webURL}${responseJson.tracks.items[i].id}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>></iframe>
+      <iframe src= "${webURL}${responseJson.tracks.items[i].id}" width="500" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
       <p id='${responseJson.tracks.items[i].id}'><p>
       </li>`
     )
@@ -123,8 +141,7 @@ function displayResults(responseJson, accToken) {
   var energies = getEnergy(trackIds.join('%2C'), accToken)
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
-      $('#' + NRG[i].id).text('Energy: ' + NRG[i].energy.toString())
-      console.log(NRG[i].id)
+      $('#' + NRG[i].id).text('Spotify Energy Level: ' + (energyRating(NRG[i].energy)))
     }
   })
 };
