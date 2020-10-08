@@ -31,11 +31,27 @@ header nav ul li a {
 
 h3 {
     text-align: center;
-    padding-top: 15px;
+}
+
+.resp-container {
+    position: relative;
+    overflow: hidden;
+    padding-top: 100%;
+}
+
+.resp-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
 }
 
 .energy {
     text-align:center left;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
   
 header nav ul li:last-child a {
@@ -65,6 +81,7 @@ h2 { /*text of headers*/
   
   /*pseudo link colors*/
   
+
   
 a:visited { color: yellow;   }
 a:hover   { color: purple; }
@@ -78,6 +95,7 @@ a:active  { color: red;  }
     margin-top: 0;
     padding-bottom: 5px;
     padding-top:3px;
+    bottom: 0;
 }
 
 .group {
@@ -90,10 +108,23 @@ ul {
     list-style: none;
     padding-left: 0;
 }
+
+li {
+    background-color:#203435;
+    
+}
+
+.hide-border {
+    padding-top:30px;
+    padding-bottom:30px;
+    background-color: #848fa5;
+}
+
+
   
 .item {
     flex: 1;
-    margin: 0;  
+    margin: 0; 
 }
   
 .item-double {
@@ -119,6 +150,23 @@ body > main > section > div > h3 {
 .centered {
     text-align: center;
 }
+
+input[type=text] {
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 50px;
+    height: 50px;
+    width: 250px;
+    font-size: 30px;
+}
+
+input[type=number] {
+    height: 25px;
+    width: 40px;
+}
+
   
 @media all and (min-width: 800px) {
     header {
@@ -141,12 +189,20 @@ body > main > section > div > h3 {
     header nav ul li a:hover {
       color: #bdbdbd;
     }
-  
+
+    .resp-container {
+        padding-top: 30%;
+        padding-bottom: 10%;
+    }
+
     .group {
       flex-direction: row;
       justify-content: space-between;
     }
-  
+    
+    .energy {
+        padding-top: 30px;
+    }
 }   
   
 form input, form textarea {
