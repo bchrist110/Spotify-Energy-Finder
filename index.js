@@ -128,20 +128,26 @@ function displayResults(responseJson, accToken) {
   console.log(responseJson);
   var trackIds = []
   $('#results-list').empty();
+  $('#results-list').append(
+      `<li class="group">
+      <h3 class = "item item-double">Songs:</h3>
+      <h3 class = "item">Spotify Energy Levels</h3>
+      </li>`
+  )
   for (let i = 0; i < responseJson.tracks.items.length; i++){
     trackIds.push(responseJson.tracks.items[i].id)
     console.log(trackIds)
     $('#results-list').append(
-      `<li>
-      <iframe src= "${webURL}${responseJson.tracks.items[i].id}" width="500" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-      <p id='${responseJson.tracks.items[i].id}'><p>
+      `<li class="group" >
+      <iframe class="item item-double" src= "${webURL}${responseJson.tracks.items[i].id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      <h3 id='${responseJson.tracks.items[i].id}' class="item energy"></h3>
       </li>`
     )
   };
   var energies = getEnergy(trackIds.join('%2C'), accToken)
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
-      $('#' + NRG[i].id).text('Spotify Energy Level: ' + (energyRating(NRG[i].energy)))
+      $('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))
     }
   })
 };
@@ -189,7 +195,7 @@ function watchForm() {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
-    const typeOf = $('#type').val();
+    const typeOf = "track"
     
     authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
     //getEnergy("6JyuJFedEvPmdWQW0PkbGJ")

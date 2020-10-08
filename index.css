@@ -1,0 +1,168 @@
+header {
+    background-color: #0B1C51;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 48px;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding-top: 20px;
+}
+  
+header nav {
+    display: flex;
+    justify-content: center;
+}
+  
+header nav ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+
+header nav ul li a {
+    font-family: "Montserrat";
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px 0 0;
+}
+
+h3 {
+    text-align: center;
+    padding-top: 15px;
+}
+
+.energy {
+    text-align:center left;
+}
+  
+header nav ul li:last-child a {
+    margin-right: 0; 
+}
+  
+main { /*main background*/
+    background-color: #848fa5;
+    
+}
+  
+body { /* more background*/
+    background-color: #848fa5;
+}
+    
+p, ul, ol { /*text of body*/
+    font-family: sans-serif;
+    color:#e5dcc5;
+}
+  
+h2 { /*text of headers*/
+    font-family: fantasy;
+    font-weight: 100;
+    color:#e5dcc5;
+    font-size: 32px;
+}
+  
+  /*pseudo link colors*/
+  
+  
+a:visited { color: yellow;   }
+a:hover   { color: purple; }
+a:active  { color: red;  }
+
+.footertext { /*making footer of page*/
+    text-align: center;
+    background-color: #242424;
+    color: #E5DCC5;
+    margin-bottom: 50;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-top:3px;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom:10px;
+}
+  
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+  
+.item {
+    flex: 1;
+    margin: 0;  
+}
+  
+.item-double {
+    flex: 2;
+}
+  
+img {
+    width: 100%;
+}
+  
+.bg-callout {
+    background-color: #212121;
+}
+  
+body > main > section > div > h3 {
+    font-family: fantasy;
+    font-weight: 100;
+    color:#e5dcc5;
+    font-size: 25px;
+    height: 30px;
+}
+  
+.centered {
+    text-align: center;
+}
+  
+@media all and (min-width: 800px) {
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px 30px;
+    }
+  
+    header h1 {
+      font-size: 52px;
+      margin: 0 0;
+      padding-botttom: 8px;
+      padding-top: 8px;
+    }
+  
+    header nav {
+      margin-top: 8px;
+    }
+    
+    header nav ul li a:hover {
+      color: #bdbdbd;
+    }
+  
+    .group {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  
+}   
+  
+form input, form textarea {
+    width: 10%;
+    margin-bottom: 20px;
+}
+  
+form textarea {
+    height: 160px;
+}
+  
+body main section div address {
+    font-style: normal;
+}
+  
+body main section div address a {
+    color: #fff;
+    text-decoration: none;
+}
