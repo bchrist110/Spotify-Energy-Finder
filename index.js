@@ -147,7 +147,8 @@ function displayResults(responseJson, accToken) {
   var energies = getEnergy(trackIds.join('%2C'), accToken)
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
-      $('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))
+      //$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))
+      $('#' + NRG[i].id).text((energyRating(NRG[i].energy)))
     }
   })
 };
@@ -198,7 +199,7 @@ function watchForm() {
     const typeOf = "track"
     
     authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
-    //getEnergy("6JyuJFedEvPmdWQW0PkbGJ")
+    
     //getPlaylistTracks()
   });
 }
