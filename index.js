@@ -32,7 +32,7 @@ function post() {
       return data.access_token
     })
     .catch((error) => {
-      console.log("Error:", error);
+      alert("Error:", error);
     });
     
 }
