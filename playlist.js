@@ -3,6 +3,7 @@
 const searchURL = 'https://api.spotify.com/v1';
 
 const webURL = "https://open.spotify.com/embed/playlist/"
+const webURL2 = "https://open.spotify.com/embed/track/"
 
 
 function post() {
@@ -39,7 +40,8 @@ function post() {
 
 function getPlaylistTracks(accToken, ID) {
     const params1 = {
-      market: 'US'
+      market: 'US',
+      limit: 30
     };
   
     var heads = {
@@ -60,7 +62,8 @@ function getPlaylistTracks(accToken, ID) {
     fetch(myAuthRequest2)
         .then(response => response.json())
         .then(data => {
-          displayTracks(data)
+          displayTracks(data, accToken)
+          console.log(data)
         })
         .catch((error) => {
             console.log("Error:", error);
@@ -76,6 +79,7 @@ function getEnergy(trackID, accToken) {
     }
     
     const url2 = searchURL +"/audio-features?ids=" + trackID;
+    console.log(url2)
   
     const myAuthInit2 = {
       method: "GET",
@@ -96,7 +100,7 @@ function getEnergy(trackID, accToken) {
 }
   
 
-function displayTracks(responseJson) {
+function displayTracks(responseJson, accToken) {
     console.log(responseJson);
     var trackIds = []
     $('#results-list').append(
@@ -109,14 +113,14 @@ function displayTracks(responseJson) {
       trackIds.push(responseJson.items[i].track.id)
       $('#results-list').append(
         `<li class="group" >
-        <iframe class="item item-double" src= "${webURL}${responseJson.items[i].track.id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        <iframe class="item item-double" src= "${webURL2}${responseJson.items[i].track.id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
         <h3 id='${responseJson.items[i].track.id}' class="item energy"></h3>
         </li>`
       )
     };
-    console.log(trackIds)
+    console.log(webURL + responseJson.items[0].track.id)
     var energies = getEnergy(trackIds.join('%2C'), accToken)
-    energies.then(NRG => {
+    energies.then(NRG => { 
       for (let i=0;i<NRG.length;i++) {
         if (NRG[i].energy > 0.90) {
           $('#' + NRG[i].id).text("9")
@@ -148,6 +152,7 @@ function search(string, limit=10, typeOfMusic, accToken) {
     }
     const queryString = formatQueryParams(params)
     const url = searchURL +"/search" + '?' + queryString;
+    console.log(url)
   
     const myAuthInit1 = {
       method: "GET",
@@ -197,13 +202,14 @@ function watchForm() {
       const maxResults = $('#js-max-results').val();
       const typeOf = "playlist"
       authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
+      authTokenPromise.then(accToken => console.log(accToken));
+    })
     $('#results-list').on('click', '.select', (event) => {
         var playlistID = $(event.currentTarget).val()
         $('#results-list').empty();
         authTokenPromise.then(accToken => getPlaylistTracks(accToken, playlistID));
+        authTokenPromise.then(accToken => console.log(accToken));
     })
-      //getPlaylistTracks()
-    });
 }
   
 $(watchForm);

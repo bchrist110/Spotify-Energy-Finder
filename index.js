@@ -65,36 +65,6 @@ function getEnergy(trackID, accToken) {
       });
 }
 
-function getPlaylistTracks(accToken) {
-  const params1 = {
-    market: 'US'
-  };
-
-  var heads = {
-    'Authorization': 'Bearer ' + accToken,
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-  const queryString = formatQueryParams(params1)
-  const playlistURL = searchURL +"/playlists/37i9dQZF1DXa8NOEUWPn9W/tracks" + '?' + queryString;
-
-  const myAuthInit1 = {
-    method: "GET",
-    headers: heads,
-  };
-
-  const myAuthRequest2 = new Request(playlistURL, myAuthInit1);
-  
-  fetch(myAuthRequest2)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-      })
-      .catch((error) => {
-          console.log("Error:", error);
-      });
-}
-
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
