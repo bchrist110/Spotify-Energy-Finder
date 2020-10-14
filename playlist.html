@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Spotify Energy Finder</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header>
+        <h1>Spotify Energy Finder</h1>
+        <nav>
+           <ul id="menu">
+              <li><a href="#Home">Tracks</a></li>
+              <li><a href="#About">About</a></li>
+              <li><a href="#Playlist">Playlists</a></li>
+           </ul>
+        </nav>
+     </header>
+    <div class="container">
+        <h1>Enter Song</h1>
+        <p>Every good DJ needs to control the energy of the songs they play in order to get the crowd to move the way they want them to</p>
+        <form id="js-form">
+            <label for="search-term"></label>
+            <input type="text" name="search-term" id="js-search-term" placeholder= "Search">
+            <br>
+            <label for="max-results">Maximum results:</label>
+            <input type="number" name="max-results" id="js-max-results" value="3" min= "1" max ="7">
+            <br>
+            <input type="submit" value="Go!">
+        </form>
+
+        <p id="js-error-message" class="error-message"></p>
+        <section id="results" class="hidden">
+          <h2>Search results</h2>
+          <ul id="results-list">
+            <div class="resp-container">
+                <li class = "resp-iframe centered hide-border"><iframe src="https://giphy.com/embed/8gwgQZR82xB2o" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></li>
+            </div>  
+          </ul>
+        </section>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+<footer class="footertext" id = "footer">
+    <h3>©Brandon Christianson</h3>
+ </footer>
+</html>
