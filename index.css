@@ -91,6 +91,12 @@ h2 { /*text of headers*/
     color:#e5dcc5;
     font-size: 32px;
 }
+
+h3, h4 {
+    font-family: fantasy;
+    font-weight: 100;
+    color:#e5dcc5;
+}
   
   /*pseudo link colors*/
   
@@ -127,9 +133,10 @@ ul {
     padding-left: 0;
 }
 
-li {
+div > ul > li {
     background-color:#203435;
-    
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .hide-border {
@@ -155,6 +162,11 @@ img {
   
 .bg-callout {
     background-color: #212121;
+}
+
+.right-text {
+    text-align: left;
+    font-size: 28px
 }
   
 body > main > section > div > h3 {
