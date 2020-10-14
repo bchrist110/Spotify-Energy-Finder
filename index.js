@@ -1,9 +1,6 @@
 'use strict'
 
-// put your own value below!
-
 const searchURL = 'https://api.spotify.com/v1';
-
 
 function post() {
   var headers = {
@@ -57,7 +54,6 @@ function getEnergy(trackID, accToken) {
   return fetch(myAuthRequest2)
       .then(response => response.json())
       .then(data => {
-        console.log(data.audio_features)
         return data.audio_features
       })
       .catch((error) => {
@@ -73,29 +69,7 @@ function formatQueryParams(params) {
 
 const webURL = "https://open.spotify.com/embed/track/"
 
-function energyRating(energy) {
-  if (energy < 0.5) {
-    return "Low"
-  }
-  if (0.5 < energy < 0.6) {
-    return "Mid-low"
-  }
-  if (0.6 < energy < 0.7) {
-    return "Medium"
-  }
-  if (0.7 < energy < 0.8) {
-    return "Mid-high"
-  }
-  if (0.8 < energy < 0.9) {
-    return "High"
-  }
-  else {
-    return "Super High"
-  }
-}
-
 function displayResults(responseJson, accToken) {
-  console.log(responseJson);
   var trackIds = []
   $('#results-list').empty();
   $('#results-list').append(
@@ -106,7 +80,6 @@ function displayResults(responseJson, accToken) {
   )
   for (let i = 0; i < responseJson.tracks.items.length; i++){
     trackIds.push(responseJson.tracks.items[i].id)
-    console.log(trackIds)
     $('#results-list').append(
       `<li class="group" >
       <iframe class="item item-double" src= "${webURL}${responseJson.tracks.items[i].id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
@@ -121,7 +94,6 @@ function displayResults(responseJson, accToken) {
         $('#' + NRG[i].id).text("9")
       }
       else {$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))}
-      //$('#' + NRG[i].id).text((energyRating(NRG[i].energy)))
     }
   })
 };
@@ -145,7 +117,7 @@ function search(string, limit=10, typeOfMusic, accToken) {
   const myAuthInit1 = {
     method: "GET",
     headers: heads,
-};
+  };
 
   const myAuthRequest1 = new Request(url, myAuthInit1);
   
@@ -153,15 +125,11 @@ function search(string, limit=10, typeOfMusic, accToken) {
       .then(response => response.json())
       .then(data => {
         displayResults(data, accToken)
-        console.log(data)
       })
       .catch((error) => {
           console.log("Error:", error);
       });
 }
-
-
-
 
 function watchForm() {
   var authTokenPromise = post()
@@ -170,10 +138,7 @@ function watchForm() {
     const searchTerm = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
     const typeOf = "track"
-    
     authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
-    
-    //getPlaylistTracks()
   });
 }
 
