@@ -147,8 +147,11 @@ function displayResults(responseJson, accToken) {
   var energies = getEnergy(trackIds.join('%2C'), accToken)
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
-      //$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))
-      $('#' + NRG[i].id).text((energyRating(NRG[i].energy)))
+      if (NRG[i].energy > 0.90) {
+        $('#' + NRG[i].id).text("9")
+      }
+      else {$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))}
+      //$('#' + NRG[i].id).text((energyRating(NRG[i].energy)))
     }
   })
 };
