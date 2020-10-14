@@ -65,6 +65,7 @@ h3 {
     text-align:center left;
     padding-top: 10px;
     padding-bottom: 5px;
+    background-color:#203435;
 }
   
 header nav ul li:last-child a {
@@ -135,8 +136,6 @@ ul {
 
 div > ul > li {
     background-color:#203435;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .hide-border {

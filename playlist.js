@@ -1,10 +1,8 @@
 'use strict'
 
 const searchURL = 'https://api.spotify.com/v1';
-
 const webURL = "https://open.spotify.com/embed/playlist/"
 const webURL2 = "https://open.spotify.com/embed/track/"
-
 
 function post() {
     var headers = {
@@ -63,7 +61,6 @@ function getPlaylistTracks(accToken, ID) {
         .then(response => response.json())
         .then(data => {
           displayTracks(data, accToken)
-          console.log(data)
         })
         .catch((error) => {
             console.log("Error:", error);
@@ -79,7 +76,6 @@ function getEnergy(trackID, accToken) {
     }
     
     const url2 = searchURL +"/audio-features?ids=" + trackID;
-    console.log(url2)
   
     const myAuthInit2 = {
       method: "GET",
@@ -91,7 +87,6 @@ function getEnergy(trackID, accToken) {
     return fetch(myAuthRequest2)
         .then(response => response.json())
         .then(data => {
-          console.log(data.audio_features)
           return data.audio_features
         })
         .catch((error) => {
@@ -101,7 +96,6 @@ function getEnergy(trackID, accToken) {
   
 
 function displayTracks(responseJson, accToken) {
-    console.log(responseJson);
     var trackIds = []
     $('#results-list').append(
         `<li class="group">
@@ -118,7 +112,6 @@ function displayTracks(responseJson, accToken) {
         </li>`
       )
     };
-    console.log(webURL + responseJson.items[0].track.id)
     var energies = getEnergy(trackIds.join('%2C'), accToken)
     energies.then(NRG => { 
       for (let i=0;i<NRG.length;i++) {
@@ -126,7 +119,7 @@ function displayTracks(responseJson, accToken) {
           $('#' + NRG[i].id).text("9")
         }
         else {$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))}
-        //$('#' + NRG[i].id).text((energyRating(NRG[i].energy)))
+        
       }
     })
 };
@@ -152,7 +145,6 @@ function search(string, limit=10, typeOfMusic, accToken) {
     }
     const queryString = formatQueryParams(params)
     const url = searchURL +"/search" + '?' + queryString;
-    console.log(url)
   
     const myAuthInit1 = {
       method: "GET",
@@ -165,7 +157,6 @@ function search(string, limit=10, typeOfMusic, accToken) {
         .then(response => response.json())
         .then(data => {
           displayResults(data, accToken)
-          console.log(data)
         })
         .catch((error) => {
             console.log("Error:", error);
@@ -175,7 +166,6 @@ function search(string, limit=10, typeOfMusic, accToken) {
 
 
 function displayResults(responseJson, accToken) {
-    console.log(responseJson);
     $('#results-list').empty();
     $('#results-list').append(
         `<li class="group">
@@ -202,13 +192,11 @@ function watchForm() {
       const maxResults = $('#js-max-results').val();
       const typeOf = "playlist"
       authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
-      authTokenPromise.then(accToken => console.log(accToken));
     })
     $('#results-list').on('click', '.select', (event) => {
         var playlistID = $(event.currentTarget).val()
         $('#results-list').empty();
         authTokenPromise.then(accToken => getPlaylistTracks(accToken, playlistID));
-        authTokenPromise.then(accToken => console.log(accToken));
     })
 }
   
