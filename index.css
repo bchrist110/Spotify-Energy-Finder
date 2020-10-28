@@ -37,7 +37,7 @@ input[type=submit] {
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
-    font-family: fantasy;
+    font-family: Helvetica;
     font-size: 24px;
     width: 200px;
   }
@@ -87,14 +87,14 @@ p, ul, ol { /*text of body*/
 }
   
 h2 { /*text of headers*/
-    font-family: fantasy;
+    font-family: Helvetica;
     font-weight: 100;
     color:#e5dcc5;
     font-size: 32px;
 }
 
 h3, h4 {
-    font-family: fantasy;
+    font-family: Helvetica;
     font-weight: 100;
     color:#e5dcc5;
 }
@@ -120,7 +120,7 @@ a:active  { color: red;  }
 
 label {
     font-size: 24px;
-    font-family: fantasy;
+    font-family: Helvetica;
 }
 
 .group {
@@ -169,7 +169,7 @@ img {
 }
   
 body > main > section > div > h3 {
-    font-family: fantasy;
+    font-family: Helvetica;
     font-weight: 100;
     color:#e5dcc5;
     font-size: 25px;
