@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const searchURL = 'https://api.spotify.com/v1';
 
@@ -7,7 +7,7 @@ function post() {
       'Authorization': 'Basic ' + 'ZTYxNjAyZjFiOTI1NGI5NTlhZWZkNDc1OWEwZTQ3MTU6ZGExMjg5OTRhNDk1NGNjYjhjZGJmZjQ2YzNmMTgxOTM= ',
       'Accept': 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
-  }
+  };
   
   var body = new URLSearchParams({
       'code': `eeWiVJ3fz9RVrsC8QUBKWM_xvGaWZYs7kMH0gCfPiByae_z3`,
@@ -32,7 +32,7 @@ function post() {
       alert("Error:", error);
     });
     
-}
+};
 
 function getEnergy(trackID, accToken) {
   
@@ -40,7 +40,7 @@ function getEnergy(trackID, accToken) {
     'Authorization': 'Bearer ' + accToken,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
-  }
+  };
   
   const url2 = searchURL +"/audio-features?ids=" + trackID;
 
@@ -59,43 +59,43 @@ function getEnergy(trackID, accToken) {
       .catch((error) => {
           console.log("Error:", error);
       });
-}
+};
 
 function formatQueryParams(params) {
   const queryItems = Object.keys(params)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
   return queryItems.join('&');
-}
+};
 
-const webURL = "https://open.spotify.com/embed/track/"
+const webURL = "https://open.spotify.com/embed/track/";
 
 function displayResults(responseJson, accToken) {
-  var trackIds = []
+  var trackIds = [];
   $('#results-list').empty();
   $('#results-list').append(
       `<li class="group">
       <h3 class = "item item-double">Songs:</h3>
       <h3 class = "item">Spotify Energy Levels</h3>
       </li>`
-  )
+  );
   for (let i = 0; i < responseJson.tracks.items.length; i++){
-    trackIds.push(responseJson.tracks.items[i].id)
+    trackIds.push(responseJson.tracks.items[i].id);
     $('#results-list').append(
       `<li class="group" >
       <iframe class="item item-double" src= "${webURL}${responseJson.tracks.items[i].id}" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
       <h3 id='${responseJson.tracks.items[i].id}' class="item energy"></h3>
       </li>`
-    )
+    );
   };
-  var energies = getEnergy(trackIds.join('%2C'), accToken)
+  var energies = getEnergy(trackIds.join('%2C'), accToken);
   energies.then(NRG => {
     for (let i=0;i<NRG.length;i++) {
       if (NRG[i].energy > 0.90) {
         $('#' + NRG[i].id).text("9")
       }
       else {$('#' + NRG[i].id).text((Math.round(10*NRG[i].energy)))}
-    }
-  })
+    };
+  });
 };
 
 
@@ -110,8 +110,8 @@ function search(string, limit=10, typeOfMusic, accToken) {
     'Authorization': 'Bearer ' + accToken,
     'Accept': 'application/json',
     'Content-Type': 'application/json'
-  }
-  const queryString = formatQueryParams(params)
+  };
+  const queryString = formatQueryParams(params);
   const url = searchURL +"/search" + '?' + queryString;
 
   const myAuthInit1 = {
@@ -129,17 +129,17 @@ function search(string, limit=10, typeOfMusic, accToken) {
       .catch((error) => {
           console.log("Error:", error);
       });
-}
+};
 
 function watchForm() {
-  var authTokenPromise = post()
+  var authTokenPromise = post();
   $('form').submit(event => {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
-    const typeOf = "track"
+    const typeOf = "track";
     authTokenPromise.then(accToken => search(searchTerm, maxResults, typeOf, accToken));
   });
-}
+};
 
 $(watchForm);
