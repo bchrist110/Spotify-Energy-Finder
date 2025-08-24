@@ -1,12 +1,18 @@
 const WEB_TRACK_EMBED = 'https://open.spotify.com/embed/track/'
 
 // Normalize base (strip trailing slashes). Define once.
-const API_BASE = (import.meta.env.VITE_API_BASE || '').replace(/\/+$/, '')
+const API_BASE = (import.meta.env.VITE_API_BASE || 'https://handwriter-django.onrender.com').replace(/\/+$/, '')
 
 export async function searchTrack(q) {
   if (!q || !q.trim()) throw new Error('Query required')
   const url = `${API_BASE}/api/spotify/search-track?q=${encodeURIComponent(q.trim())}`
-  const res = await fetch(url)
+  
+  const headers = {}
+  if (import.meta.env.VITE_FRONTEND_SHARED_KEY) {
+    headers['X-Frontend-Key'] = import.meta.env.VITE_FRONTEND_SHARED_KEY
+  }
+  
+  const res = await fetch(url, { headers })
   if (!res.ok) {
     // Try to surface backend error JSON if available
     let detail = 'Search failed'

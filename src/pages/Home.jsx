@@ -1,3 +1,6 @@
+// (Deprecated) Home page no longer used after simplifying app to single Spotify Energy Finder.
+// File retained temporarily; safe to delete.
+
 import React from 'react'
 import Header from '../components/Header'
 import '../app.css'

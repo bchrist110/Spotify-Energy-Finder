@@ -17,12 +17,17 @@ export async function analyzeTrack(input) {
   }
 
   // Allow optional environment override for backend base (e.g. http://localhost:8000)
-  const base = import.meta.env.VITE_API_BASE || ''
+  const base = import.meta.env.VITE_API_BASE || 'https://handwriter-django.onrender.com'
   const url = base.replace(/\/$/, '') + '/api/analyze'
+
+  const headers = { 'Content-Type': 'application/json' }
+  if (import.meta.env.VITE_FRONTEND_SHARED_KEY) {
+    headers['X-Frontend-Key'] = import.meta.env.VITE_FRONTEND_SHARED_KEY
+  }
 
   const res = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(payload),
   })
 
